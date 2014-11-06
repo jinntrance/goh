@@ -1,15 +1,12 @@
 package goh
 
 import (
-	"github.com/sdming/goh/Hbase"
-	"github.com/sdming/goh/thrift" // will replace it later
 	"net"
 	"net/url"
-	//"thrift"
-)
 
-const (
-	defaultPoolSize = 30
+	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/jinntrance/goh/Hbase"
+	"github.com/jinntrance/pool"
 )
 
 /*
@@ -26,35 +23,33 @@ type HClient struct {
 	state           int //
 }
 
-type HbaseClient struct {
-	Addr string
-	Protocol int
-	Framed bool
-	pool   chan *HClient
+type HbaseClientPool struct {
+	Addr        string
+	Protocol    int
+	Framed      bool
+	hPool       *pool.Pool
 	MaxPoolSize int
-	Timeout int64
+	Timeout     int64
 }
 
-func (client *HbaseClient) GetClient() (c *HClient, err error) {
-    if client.pool == nil {
-	poolSize := client.MaxPoolSize
-	if poolSize == 0 {
-		poolSize = defaultPoolSize
+func (clientPool *HbaseClientPool) GetClient() (c *HClient, err error) {
+	if nil == clientPool {
+		clientPool.hPool = pool.Pool{
+			poolSize: clientPool.MaxPoolSize,
+			New: func() (interface{}, error) {
+				return NewTcpClient(clientPool.Addr, clientPool.Protocol, clientPool.Framed, clientPool.Timeout)
+			},
+			Close: func(x interface{}) {
+				x.(*HClient).Close()
+			},
+		}
 	}
-        client.pool = make(chan *HClient, poolSize)
-	for i := 0; i < poolSize; i++ {
-		client.pool <- nil
-	}
-    }
-    c = <- client.pool
-    if c == nil { 
-	return NewTcpClient(client.Addr, client.Protocol, client.Framed,client.Timeout)
-    }
-    return c, nil
+	cli, err := clientPool.hPool.Get()
+	return cli.(*HClient), err
 }
 
-func (client *HbaseClient) ReturnClient(c *HClient) {
-	client.pool <- c
+func (clientPool *HbaseClientPool) ReturnClient(c *HClient, err error) {
+	clientPool.hPool.Put(c, err)
 }
 
 /*
@@ -79,7 +74,7 @@ func NewHttpClient(rawurl string, protocol int) (client *HClient, err error) {
 NewTcpClient return a base tcp client instance
 
 */
-func NewTcpClient(rawaddr string, protocol int, framed bool,timeout int64) (client *HClient, err error) {
+func NewTcpClient(rawaddr string, protocol int, framed bool, timeout int64) (client *HClient, err error) {
 	tcpAddr, err := net.ResolveTCPAddr("tcp", rawaddr)
 	if err != nil {
 		return
@@ -99,7 +94,7 @@ func NewTcpClient(rawaddr string, protocol int, framed bool,timeout int64) (clie
 }
 
 /*
-newClient create a new hbase client 
+newClient create a new hbase client
 */
 func newClient(addr string, protocol int, trans thrift.TTransport) (*HClient, error) {
 	var client *HClient
@@ -152,7 +147,7 @@ func (client *HClient) Close() error {
 
 /**
  * Brings a table on-line (enables it)
- * 
+ *
  * Parameters:
  *  - TableName: name of the table
  */
@@ -163,7 +158,7 @@ func (client *HClient) EnableTable(tableName string) error {
 /**
  * Disables a table (takes it off-line) If it is being served, the master
  * will tell the servers to stop serving it.
- * 
+ *
  * Parameters:
  *  - TableName: name of the table
  */
@@ -173,7 +168,7 @@ func (client *HClient) DisableTable(tableName string) (err error) {
 
 /**
  * @return true if table is on-line
- * 
+ *
  * Parameters:
  *  - TableName: name of the table to check
  */
@@ -201,9 +196,9 @@ func (client *HClient) MajorCompact(tableNameOrRegionName string) (err error) {
 
 /**
  * List all the column families assoicated with a table.
- * 
+ *
  * @return list of column family descriptors
- * 
+ *
  * Parameters:
  *  - TableName: table name
  */
@@ -219,9 +214,9 @@ func (client *HClient) GetTableNames() (tables []string, err error) {
 
 /**
  * List all the column families assoicated with a table.
- * 
+ *
  * @return list of column family descriptors
- * 
+ *
  * Parameters:
  *  - TableName: table name
  */
@@ -236,9 +231,9 @@ func (client *HClient) GetColumnDescriptors(tableName string) (columns map[strin
 
 /**
  * List the regions associated with a table.
- * 
+ *
  * @return list of region descriptors
- * 
+ *
  * Parameters:
  *  - TableName: table name
  */
@@ -257,11 +252,11 @@ func (client *HClient) GetTableRegions(tableName string) (regions []*TRegionInfo
  * field for each ColumnDescriptor must be set and must end in a
  * colon (:). All other fields are optional and will get default
  * values if not explicitly specified.
- * 
+ *
  * @throws IllegalArgument if an input parameter is invalid
- * 
+ *
  * @throws AlreadyExists if the table name already exists
- * 
+ *
  * Parameters:
  *  - TableName: name of table to create
  *  - ColumnFamilies: list of column family descriptors
@@ -278,10 +273,10 @@ func (client *HClient) CreateTable(tableName string, columnFamilies []*ColumnDes
 
 /**
  * Deletes a table
- * 
+ *
  * @throws IOError if table doesn't exist on server or there was some other
  * problem
- * 
+ *
  * Parameters:
  *  - TableName: name of table to delete
  */
@@ -292,9 +287,9 @@ func (client *HClient) DeleteTable(tableName string) (err error) {
 /**
  * Get a single TCell for the specified table, row, and column at the
  * latest timestamp. Returns an empty list if no such value exists.
- * 
+ *
  * @return value for specified row/column
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -314,9 +309,9 @@ func (client *HClient) Get(tableName string, row []byte, column string, attribut
 /**
  * Get the specified number of versions for the specified table,
  * row, and column.
- * 
+ *
  * @return list of cells for specified row/column
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -338,9 +333,9 @@ func (client *HClient) GetVer(tableName string, row []byte, column string, numVe
  * Get the specified number of versions for the specified table,
  * row, and column.  Only versions less than or equal to the specified
  * timestamp will be returned.
- * 
+ *
  * @return list of cells for specified row/column
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -362,9 +357,9 @@ func (client *HClient) GetVerTs(tableName string, row []byte, column string, tim
 /**
  * Get all the data for the specified table and row at the latest
  * timestamp. Returns an empty list if the row does not exist.
- * 
+ *
  * @return TRowResult containing the row and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -383,9 +378,9 @@ func (client *HClient) GetRow(tableName string, row []byte, attributes map[strin
 /**
  * Get the specified columns for the specified table and row at the latest
  * timestamp. Returns an empty list if the row does not exist.
- * 
+ *
  * @return TRowResult containing the row and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -403,21 +398,21 @@ func (client *HClient) GetRowWithColumns(tableName string, row []byte, columns [
 }
 
 func (client *HClient) GetRowWithColumnsMaxVer(tableName string, row []byte, columns []string, numVersions int32, attributes map[string]string) (data []*Hbase.TRowResultWithMultiColVer, err error) {
-        ret, io, e1 := client.hbase.GetRowWithColumnsMaxVer(Hbase.Text(tableName), Hbase.Text(row), toHbaseTextList(columns), numVersions, toHbaseTextMap(attributes))
-        if err = checkHbaseError(io, e1); err != nil {
-                return
-        }
-                
-        data = ret                                            
-        return                                                
+	ret, io, e1 := client.hbase.GetRowWithColumnsMaxVer(Hbase.Text(tableName), Hbase.Text(row), toHbaseTextList(columns), numVersions, toHbaseTextMap(attributes))
+	if err = checkHbaseError(io, e1); err != nil {
+		return
+	}
+
+	data = ret
+	return
 }
 
 /**
  * Get all the data for the specified table and row at the specified
  * timestamp. Returns an empty list if the row does not exist.
- * 
+ *
  * @return TRowResult containing the row and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of the table
  *  - Row: row key
@@ -437,9 +432,9 @@ func (client *HClient) GetRowTs(tableName string, row []byte, timestamp int64, a
 /**
  * Get the specified columns for the specified table and row at the specified
  * timestamp. Returns an empty list if the row does not exist.
- * 
+ *
  * @return TRowResult containing the row and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -460,9 +455,9 @@ func (client *HClient) GetRowWithColumnsTs(tableName string, row []byte, columns
 /**
  * Get all the data for the specified table and rows at the latest
  * timestamp. Returns an empty list if no rows exist.
- * 
+ *
  * @return TRowResult containing the rows and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Rows: row keys
@@ -481,9 +476,9 @@ func (client *HClient) GetRows(tableName string, rows [][]byte, attributes map[s
 /**
  * Get the specified columns for the specified table and rows at the latest
  * timestamp. Returns an empty list if no rows exist.
- * 
+ *
  * @return TRowResult containing the rows and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Rows: row keys
@@ -507,9 +502,9 @@ func (client *HClient) GetRowsWithColumns(tableName string, rows [][]byte, colum
 /**
  * Get all the data for the specified table and rows at the specified
  * timestamp. Returns an empty list if no rows exist.
- * 
+ *
  * @return TRowResult containing the rows and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of the table
  *  - Rows: row keys
@@ -529,9 +524,9 @@ func (client *HClient) GetRowsTs(tableName string, rows [][]byte, timestamp int6
 /**
  * Get the specified columns for the specified table and rows at the specified
  * timestamp. Returns an empty list if no rows exist.
- * 
+ *
  * @return TRowResult containing the rows and map of columns to TCells
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Rows: row keys
@@ -554,7 +549,7 @@ func (client *HClient) GetRowsWithColumnsTs(tableName string, rows [][]byte, col
  * single transaction.  If an exception is thrown, then the
  * transaction is aborted.  Default current timestamp is used, and
  * all entries will have an identical timestamp.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -570,7 +565,7 @@ func (client *HClient) MutateRow(tableName string, row []byte, mutations []*Hbas
  * single transaction.  If an exception is thrown, then the
  * transaction is aborted.  The specified timestamp is used, and
  * all entries will have an identical timestamp.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -587,7 +582,7 @@ func (client *HClient) MutateRowTs(tableName string, row []byte, mutations []*Hb
  * in a single transaction.  If an exception is thrown, then the
  * transaction is aborted.  Default current timestamp is used, and
  * all entries will have an identical timestamp.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - RowBatches: list of row batches
@@ -602,7 +597,7 @@ func (client *HClient) MutateRows(tableName string, rowBatches []*Hbase.BatchMut
  * in a single transaction.  If an exception is thrown, then the
  * transaction is aborted.  The specified timestamp is used, and
  * all entries will have an identical timestamp.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - RowBatches: list of row batches
@@ -615,7 +610,7 @@ func (client *HClient) MutateRowsTs(tableName string, rowBatches []*Hbase.BatchM
 
 /**
  * Atomically increment the column value specified.  Returns the next value post increment.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row to increment
@@ -634,7 +629,7 @@ func (client *HClient) AtomicIncrement(tableName string, row []byte, column stri
 
 /**
  * Delete all cells that match the passed row and column.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: Row to update
@@ -648,7 +643,7 @@ func (client *HClient) DeleteAll(tableName string, row []byte, column string, at
 /**
  * Delete all cells that match the passed row and column and whose
  * timestamp is equal-to or older than the passed timestamp.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: Row to update
@@ -662,7 +657,7 @@ func (client *HClient) DeleteAllTs(tableName string, row []byte, column string, 
 
 /**
  * Completely delete the row's cells.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: key of the row to be completely deleted.
@@ -677,7 +672,7 @@ func (client *HClient) DeleteAllRow(tableName string, row []byte, attributes map
  * Increments can be applied async if hbase.regionserver.thrift.coalesceIncrement is set to true.
  * False is the default.  Turn to true if you need the extra performance and can accept some
  * data loss if a thrift server dies with increments still in the queue.
- * 
+ *
  * Parameters:
  *  - Increment: The single increment to apply
  */
@@ -696,7 +691,7 @@ func (client *HClient) IncrementRows(increments []*Hbase.TIncrement) error {
 /**
  * Completely delete the row's cells marked with a timestamp
  * equal-to or older than the passed timestamp.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: key of the row to be completely deleted.
@@ -710,7 +705,7 @@ func (client *HClient) DeleteAllRowTs(tableName string, row []byte, timestamp in
 /**
  * Get a scanner on the current table, using the Scan instance
  * for the scan parameters.
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Scan: Scan instance
@@ -729,9 +724,9 @@ func (client *HClient) ScannerOpenWithScan(tableName string, scan *TScan, attrib
 /**
  * Get a scanner on the current table starting at the specified row and
  * ending at the last row in the table.  Return the specified columns.
- * 
+ *
  * @return scanner id to be used with other scanner procedures
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - StartRow: Starting row in table to scan.
@@ -755,9 +750,9 @@ func (client *HClient) ScannerOpen(tableName string, startRow []byte, columns []
  * Get a scanner on the current table starting and stopping at the
  * specified rows.  ending at the last row in the table.  Return the
  * specified columns.
- * 
+ *
  * @return scanner id to be used with other scanner procedures
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - StartRow: Starting row in table to scan.
@@ -782,9 +777,9 @@ func (client *HClient) ScannerOpenWithStop(tableName string, startRow []byte, st
 /**
  * Open a scanner for a given prefix.  That is all rows will have the specified
  * prefix. No other rows will be returned.
- * 
+ *
  * @return scanner id to use with other scanner calls
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - StartAndPrefix: the prefix (and thus start row) of the keys you want
@@ -805,9 +800,9 @@ func (client *HClient) ScannerOpenWithPrefix(tableName string, startAndPrefix []
  * Get a scanner on the current table starting at the specified row and
  * ending at the last row in the table.  Return the specified columns.
  * Only values with the specified timestamp are returned.
- * 
+ *
  * @return scanner id to be used with other scanner procedures
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - StartRow: Starting row in table to scan.
@@ -833,9 +828,9 @@ func (client *HClient) ScannerOpenTs(tableName string, startRow []byte, columns 
  * specified rows.  ending at the last row in the table.  Return the
  * specified columns.  Only values with the specified timestamp are
  * returned.
- * 
+ *
  * @return scanner id to be used with other scanner procedures
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - StartRow: Starting row in table to scan.
@@ -863,13 +858,13 @@ func (client *HClient) ScannerOpenWithStopTs(tableName string, startRow []byte, 
  * row in the table.  When there are no more rows in the table, or a key
  * greater-than-or-equal-to the scanner's specified stopRow is reached,
  * an empty list is returned.
- * 
+ *
  * @return a TRowResult containing the current row and a map of the columns to TCells.
- * 
+ *
  * @throws IllegalArgument if ScannerID is invalid
- * 
+ *
  * @throws NotFound when the scanner reaches the end
- * 
+ *
  * Parameters:
  *  - Id: id of a scanner returned by scannerOpen
  */
@@ -888,13 +883,13 @@ func (client *HClient) ScannerGet(id int32) (data []*Hbase.TRowResult, err error
  * rows and advances to the next row in the table.  When there are no more
  * rows in the table, or a key greater-than-or-equal-to the scanner's
  * specified stopRow is reached,  an empty list is returned.
- * 
+ *
  * @return a TRowResult containing the current row and a map of the columns to TCells.
- * 
+ *
  * @throws IllegalArgument if ScannerID is invalid
- * 
+ *
  * @throws NotFound when the scanner reaches the end
- * 
+ *
  * Parameters:
  *  - Id: id of a scanner returned by scannerOpen
  *  - NbRows: number of results to return
@@ -911,9 +906,9 @@ func (client *HClient) ScannerGetList(id int32, nbRows int32) (data []*Hbase.TRo
 
 /**
  * Closes the server-state associated with an open scanner.
- * 
+ *
  * @throws IllegalArgument if ScannerID is invalid
- * 
+ *
  * Parameters:
  *  - Id: id of a scanner returned by scannerOpen
  */
@@ -923,9 +918,9 @@ func (client *HClient) ScannerClose(id int32) error {
 
 /**
  * Get the row just before the specified one.
- * 
+ *
  * @return value for specified row/column
- * 
+ *
  * Parameters:
  *  - TableName: name of table
  *  - Row: row key
@@ -944,9 +939,9 @@ func (client *HClient) GetRowOrBefore(tableName string, row string, family strin
 /**
  * Get the regininfo for the specified row. It scans
  * the metatable to find region's start and end keys.
- * 
+ *
  * @return value for specified row/column
- * 
+ *
  * Parameters:
  *  - Row: row key
  */

@@ -7,7 +7,7 @@ package goh
 
 import (
 	"bytes"
-	"github.com/sdming/goh/Hbase"
+	"github.com/jinntrance/goh/Hbase"
 )
 
 /*
