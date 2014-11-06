@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sdming/goh"
-	"github.com/sdming/goh/Hbase"
+	"github.com/jinntrance/goh"
+	"github.com/jinntrance/goh/Hbase"
 )
 
 func main() {

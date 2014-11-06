@@ -10,7 +10,7 @@ Install
 The official thrift package is out of date, need install [thrift4go](https://github.com/apesternikov/thrift4go) first,
 then
 
-	go get github.com/sdming/goh
+	go get github.com/jinntrance/goh
 
 Usage
 ===

@@ -6,7 +6,7 @@ package Hbase
 
 import (
 	"fmt"
-	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/jinntrance/goh/thrift"
 	"math"
 )
 
