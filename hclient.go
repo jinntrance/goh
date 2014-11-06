@@ -8,6 +8,10 @@ import (
 	//"thrift"
 )
 
+const (
+	defaultPoolSize = 30
+)
+
 /*
 HClient is wrap of hbase client
 */
@@ -20,6 +24,37 @@ type HClient struct {
 	ProtocolFactory thrift.TProtocolFactory
 	hbase           *Hbase.HbaseClient
 	state           int //
+}
+
+type HbaseClient struct {
+	Addr string
+	Protocol int
+	Framed bool
+	pool   chan *HClient
+	MaxPoolSize int
+	Timeout int64
+}
+
+func (client *HbaseClient) GetClient() (c *HClient, err error) {
+    if client.pool == nil {
+	poolSize := client.MaxPoolSize
+	if poolSize == 0 {
+		poolSize = defaultPoolSize
+	}
+        client.pool = make(chan *HClient, poolSize)
+	for i := 0; i < poolSize; i++ {
+		client.pool <- nil
+	}
+    }
+    c = <- client.pool
+    if c == nil { 
+	return NewTcpClient(client.Addr, client.Protocol, client.Framed,client.Timeout)
+    }
+    return c, nil
+}
+
+func (client *HbaseClient) ReturnClient(c *HClient) {
+	client.pool <- c
 }
 
 /*
@@ -44,14 +79,15 @@ func NewHttpClient(rawurl string, protocol int) (client *HClient, err error) {
 NewTcpClient return a base tcp client instance
 
 */
-func NewTcpClient(rawaddr string, protocol int, framed bool) (client *HClient, err error) {
+func NewTcpClient(rawaddr string, protocol int, framed bool,timeout int64) (client *HClient, err error) {
 	tcpAddr, err := net.ResolveTCPAddr("tcp", rawaddr)
 	if err != nil {
 		return
 	}
 
 	var trans thrift.TTransport
-	trans, err = thrift.NewTNonblockingSocketAddr(tcpAddr)
+	//trans, err = thrift.NewTNonblockingSocketAddr(tcpAddr)
+	trans, err = thrift.NewTNonblockingSocketAddrTimeout(tcpAddr, timeout) // 5e7 50ms timeout
 	if err != nil {
 		return
 	}
@@ -81,9 +117,9 @@ func newClient(addr string, protocol int, trans thrift.TTransport) (*HClient, er
 		hbase:           Hbase.NewHbaseClientFactory(trans, protocolFactory),
 	}
 
-	// if err = client.Open(); err != nil {
-	// 	return nil, err
-	// }
+	if err = client.Open(); err != nil {
+		return nil, err
+	}
 
 	return client, nil
 }
@@ -364,6 +400,16 @@ func (client *HClient) GetRowWithColumns(tableName string, row []byte, columns [
 
 	data = ret
 	return
+}
+
+func (client *HClient) GetRowWithColumnsMaxVer(tableName string, row []byte, columns []string, numVersions int32, attributes map[string]string) (data []*Hbase.TRowResultWithMultiColVer, err error) {
+        ret, io, e1 := client.hbase.GetRowWithColumnsMaxVer(Hbase.Text(tableName), Hbase.Text(row), toHbaseTextList(columns), numVersions, toHbaseTextMap(attributes))
+        if err = checkHbaseError(io, e1); err != nil {
+                return
+        }
+                
+        data = ret                                            
+        return                                                
 }
 
 /**

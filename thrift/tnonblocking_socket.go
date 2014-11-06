@@ -120,7 +120,13 @@ func (p *TNonblockingSocket) Open() error {
 	}
 
 	var err error
-	if p.conn, err = net.Dial(p.addr.Network(), p.addr.String()); err != nil {
+    if p.nsecTimeout > 0 {
+        p.conn, err = net.DialTimeout(p.addr.Network(), p.addr.String(), time.Duration(p.nsecTimeout))
+    } else {
+        p.conn, err = net.Dial(p.addr.Network(), p.addr.String())
+    }
+        
+	if err != nil {
 		LOGGER.Print("Could not open socket", err.Error())
 		return NewTTransportException(NOT_OPEN, err.Error())
 	}
