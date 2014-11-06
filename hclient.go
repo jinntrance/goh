@@ -33,15 +33,15 @@ type HbaseClientPool struct {
 }
 
 func (clientPool *HbaseClientPool) GetClient() (c *HClient, err error) {
-	if nil == clientPool {
-		clientPool.hPool = pool.Pool{
+	if nil == clientPool.hPool {
+		clientPool.hPool =  & pool.Pool {
 			New: func() (interface{}, error) {
 				return NewTcpClient(clientPool.Addr, clientPool.Protocol, clientPool.Framed, clientPool.Timeout)
 			},
 			Close: func(x interface{}) {
 				x.(*HClient).Close()
 			},
-			poolSize: clientPool.MaxPoolSize,
+			PoolSize : clientPool.MaxPoolSize,
 		}
 	}
 	cli, err := clientPool.hPool.Get()
