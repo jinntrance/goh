@@ -4,8 +4,8 @@ import (
 	"net"
 	"net/url"
 
-	"git.apache.org/thrift.git/lib/go/thrift"
 	"github.com/jinntrance/goh/Hbase"
+	"github.com/jinntrance/goh/thrift"
 	"github.com/jinntrance/pool"
 )
 
