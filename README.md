@@ -77,6 +77,7 @@ Changes
 ===
 * 1 kick off  
 * 2 change thrift package from pomack/thrift4go to apesternikov/thrift4go  
+* 3 add pool support : https://github.com/jinntrance/pool  
 
 
 Links
