@@ -138,7 +138,7 @@ func (client *HClient) Open() error {
 Close connection
 */
 func (client *HClient) Close() error {
-	if client.state == stateOpen {
+	if nil != client && client.state == stateOpen {
 		if err := client.Trans.Close(); err != nil {
 			return err
 		}
