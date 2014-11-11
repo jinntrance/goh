@@ -5,7 +5,7 @@ import (
 	"net/url"
 
 	"github.com/jinntrance/goh/Hbase"
-	"github.com/jinntrance/goh/thrift"
+	"git.apache.org/thrift.git/lib/go/thrift"
 	"github.com/jinntrance/pool"
 )
 
