@@ -1,11 +1,13 @@
 package goh
 
 import (
+	"log"
 	"net"
 	"net/url"
+	"time"
 
-	"github.com/jinntrance/goh/Hbase"
 	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/jinntrance/goh/Hbase"
 	"github.com/jinntrance/pool"
 )
 
@@ -29,7 +31,7 @@ type HbaseClientPool struct {
 	Framed      bool
 	hPool       *pool.Pool
 	MaxPoolSize int
-	Timeout     int64
+	Timeout     time.Duration
 }
 
 func (clientPool *HbaseClientPool) GetClient() (c *HClient, err error) {
@@ -76,7 +78,7 @@ func NewHttpClient(rawurl string, protocol int) (client *HClient, err error) {
 NewTcpClient return a base tcp client instance
 
 */
-func NewTcpClient(rawaddr string, protocol int, framed bool, timeout int64) (client *HClient, err error) {
+func NewTcpClient(rawaddr string, protocol int, framed bool, timeout time.Duration) (client *HClient, err error) {
 	tcpAddr, err := net.ResolveTCPAddr("tcp", rawaddr)
 	if err != nil {
 		return
@@ -84,8 +86,9 @@ func NewTcpClient(rawaddr string, protocol int, framed bool, timeout int64) (cli
 
 	var trans thrift.TTransport
 	//trans, err = thrift.NewTNonblockingSocketAddr(tcpAddr)
-	trans, err = thrift.NewTNonblockingSocketAddrTimeout(tcpAddr, timeout) // 5e7 50ms timeout
+	trans, err = thrift.NewTSocketTimeout(tcpAddr, timeout)
 	if err != nil {
+		log.Println("error resolving address:", err)
 		return
 	}
 	if framed {
