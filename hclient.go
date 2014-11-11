@@ -2,7 +2,6 @@ package goh
 
 import (
 	"log"
-	"net"
 	"net/url"
 	"time"
 
@@ -79,23 +78,17 @@ NewTcpClient return a base tcp client instance
 
 */
 func NewTcpClient(rawaddr string, protocol int, framed bool, timeout time.Duration) (client *HClient, err error) {
-	tcpAddr, err := net.ResolveTCPAddr("tcp", rawaddr)
-	if err != nil {
-		return
-	}
 
-	var trans thrift.TTransport
-	//trans, err = thrift.NewTNonblockingSocketAddr(tcpAddr)
-	trans, err = thrift.NewTSocketTimeout(tcpAddr, timeout)
+	socket, err := thrift.NewTSocketTimeout(rawaddr, timeout)
 	if err != nil {
 		log.Println("error resolving address:", err)
 		return
 	}
 	if framed {
-		trans = thrift.NewTFramedTransport(trans)
+		trans := thrift.NewTFramedTransport(socket)
+		return newClient(rawaddr, protocol, trans)
 	}
-
-	return newClient(tcpAddr.String(), protocol, trans)
+	return newClient(rawaddr, protocol, socket)
 }
 
 /*
@@ -217,40 +210,6 @@ func (client *HClient) GetTableNames() (tables []string, err error) {
 	return
 }
 
-/**
- * List all the column families assoicated with a table.
- *
- * @return list of column family descriptors
- *
- * Parameters:
- *  - TableName: table name
- */
-func (client *HClient) GetColumnDescriptors(tableName string) (columns map[string]*ColumnDescriptor, err error) {
-	ret, io, e1 := client.hbase.GetColumnDescriptors(Hbase.Text(tableName))
-	if err = checkHbaseError(io, e1); err != nil {
-		return
-	}
-	columns = toColMap(ret)
-	return
-}
-
-/**
- * List the regions associated with a table.
- *
- * @return list of region descriptors
- *
- * Parameters:
- *  - TableName: table name
- */
-func (client *HClient) GetTableRegions(tableName string) (regions []*TRegionInfo, err error) {
-	ret, io, e1 := client.hbase.GetTableRegions(Hbase.Text(tableName))
-	if err = checkHbaseError(io, e1); err != nil {
-		return
-	}
-
-	regions = toRegionList(ret)
-	return
-}
 
 /**
  * Create a table with the specified column families.  The name
@@ -266,9 +225,9 @@ func (client *HClient) GetTableRegions(tableName string) (regions []*TRegionInfo
  *  - TableName: name of table to create
  *  - ColumnFamilies: list of column family descriptors
  */
-func (client *HClient) CreateTable(tableName string, columnFamilies []*ColumnDescriptor) (exists bool, err error) {
-	columns := toHbaseColList(columnFamilies)
-	io, ia, ex, e1 := client.hbase.CreateTable(Hbase.Text(tableName), columns)
+func (client *HClient) CreateTable(tableName string, columnFamilies []*Hbase.ColumnDescriptor) (exists bool,
+	err error) {
+	io, ia, ex, e1 := client.hbase.CreateTable(Hbase.Text(tableName), columnFamilies)
 	if err = checkHbaseArgError(io, ia, e1); err != nil {
 		return
 	}
@@ -938,24 +897,5 @@ func (client *HClient) GetRowOrBefore(tableName string, row string, family strin
 	}
 
 	data = ret
-	return
-}
-
-/**
- * Get the regininfo for the specified row. It scans
- * the metatable to find region's start and end keys.
- *
- * @return value for specified row/column
- *
- * Parameters:
- *  - Row: row key
- */
-func (client *HClient) GetRegionInfo(row string) (region *TRegionInfo, err error) {
-	ret, io, e1 := client.hbase.GetRegionInfo(Hbase.Text(row))
-	if err = checkHbaseError(io, e1); err != nil {
-		return
-	}
-
-	region = toRegion(ret)
 	return
 }

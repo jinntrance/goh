@@ -52,166 +52,14 @@ func toHbaseTextListFromByte(list [][]byte) []Hbase.Text {
 	return data
 }
 
-func toHbaseTextMap(source map[string]string) map[string]Hbase.Text {
+func toHbaseTextMap(source map[string]string) map[Hbase.Text]Hbase.Text {
 	if source == nil {
 		return nil
 	}
 
-	data := make(map[string]Hbase.Text, len(source))
+	data := make(map[Hbase.Text]Hbase.Text, len(source))
 	for k, v := range source {
-		data[k] = Hbase.Text(v)
-	}
-
-	return data
-}
-
-//type Bytes []byte
-
-//type ScannerID int32
-
-/**
- * An HColumnDescriptor contains information about a column family
- * such as the number of versions, compression settings, etc. It is
- * used as input when creating a table or adding a column.
- * 
- * Attributes:
- *  - Name
- *  - MaxVersions
- *  - Compression
- *  - InMemory
- *  - BloomFilterType
- *  - BloomFilterVectorSize
- *  - BloomFilterNbHashes
- *  - BlockCacheEnabled
- *  - TimeToLive
- */
-type ColumnDescriptor struct {
-	Name                  string "name"                  // 1
-	MaxVersions           int32  "maxVersions"           // 2
-	Compression           string "compression"           // 3
-	InMemory              bool   "inMemory"              // 4
-	BloomFilterType       string "bloomFilterType"       // 5
-	BloomFilterVectorSize int32  "bloomFilterVectorSize" // 6
-	BloomFilterNbHashes   int32  "bloomFilterNbHashes"   // 7
-	BlockCacheEnabled     bool   "blockCacheEnabled"     // 8
-	TimeToLive            int32  "timeToLive"            // 9
-}
-
-func toColumn(col *Hbase.ColumnDescriptor) *ColumnDescriptor {
-	return &ColumnDescriptor{
-		Name:                  string(col.Name),
-		MaxVersions:           col.MaxVersions,
-		Compression:           col.Compression,
-		InMemory:              col.InMemory,
-		BloomFilterType:       col.BloomFilterType,
-		BloomFilterVectorSize: col.BloomFilterVectorSize,
-		BloomFilterNbHashes:   col.BloomFilterNbHashes,
-		BlockCacheEnabled:     col.BlockCacheEnabled,
-		TimeToLive:            col.TimeToLive,
-	}
-
-}
-
-func toColMap(cols map[string]*Hbase.ColumnDescriptor) map[string]*ColumnDescriptor {
-	if cols == nil {
-		return nil
-	}
-	data := make(map[string]*ColumnDescriptor, len(cols))
-	for k, v := range cols {
-		data[k] = toColumn(v)
-	}
-	return data
-}
-
-func toHbaseColumn(col *ColumnDescriptor) *Hbase.ColumnDescriptor {
-	return &Hbase.ColumnDescriptor{
-		Name:                  Hbase.Text(col.Name),
-		MaxVersions:           col.MaxVersions,
-		Compression:           col.Compression,
-		InMemory:              col.InMemory,
-		BloomFilterType:       col.BloomFilterType,
-		BloomFilterVectorSize: col.BloomFilterVectorSize,
-		BloomFilterNbHashes:   col.BloomFilterNbHashes,
-		BlockCacheEnabled:     col.BlockCacheEnabled,
-		TimeToLive:            col.TimeToLive,
-	}
-
-}
-
-func toHbaseColList(cols []*ColumnDescriptor) []*Hbase.ColumnDescriptor {
-	if cols == nil {
-		return nil
-	}
-
-	l := len(cols)
-	data := make([]*Hbase.ColumnDescriptor, l)
-	for i := 0; i < l; i++ {
-		data[i] = toHbaseColumn(cols[i])
-	}
-	return data
-}
-
-func NewColumnDescriptorDefault(name string) *ColumnDescriptor {
-	output := &ColumnDescriptor{
-		MaxVersions:           3,
-		Compression:           "NONE",
-		InMemory:              false,
-		BloomFilterType:       "NONE",
-		BloomFilterVectorSize: 0,
-		BloomFilterNbHashes:   0,
-		BlockCacheEnabled:     false,
-		TimeToLive:            -1,
-		Name:                  name,
-	}
-
-	return output
-}
-
-/**
- * A TRegionInfo contains information about an HTable region.
- * 
- * Attributes:
- *  - StartKey
- *  - EndKey
- *  - Id
- *  - Name
- *  - Version
- *  - ServerName
- *  - Port
- */
-type TRegionInfo struct {
-	StartKey   string "startKey"   // 1
-	EndKey     string "endKey"     // 2
-	Id         int64  "id"         // 3
-	Name       string "name"       // 4
-	Version    int8   "version"    // 5
-	ServerName string "serverName" // 6
-	Port       int32  "port"       // 7
-}
-
-func toRegion(region *Hbase.TRegionInfo) *TRegionInfo {
-	return &TRegionInfo{
-		StartKey:   string(region.StartKey),
-		EndKey:     string(region.EndKey),
-		Id:         region.Id,
-		Name:       string(region.Name),
-		Version:    region.Version,
-		ServerName: string(region.ServerName),
-		Port:       region.Port,
-	}
-
-}
-
-func toRegionList(regions []*Hbase.TRegionInfo) []*TRegionInfo {
-
-	if regions == nil {
-		return nil
-	}
-
-	l := len(regions)
-	data := make([]*TRegionInfo, l)
-	for i := 0; i < l; i++ {
-		data[i] = toRegion(regions[i])
+		data[Hbase.Text(k)] = Hbase.Text(v)
 	}
 
 	return data
@@ -257,7 +105,7 @@ func NewMutation(column string, value []byte) *Hbase.Mutation {
 
 func NewBatchMutation(row []byte, mutations []*Hbase.Mutation) *Hbase.BatchMutation {
 	return &Hbase.BatchMutation{
-		Row:       []byte(row),
+		Row:       Hbase.Text(row),
 		Mutations: mutations,
 	}
 
@@ -333,7 +181,7 @@ func toHbaseTScan(scan *TScan) *Hbase.TScan {
 			Timestamp:    scan.Timestamp,
 			Columns:      toHbaseTextList(scan.Columns),
 			Caching:      scan.Caching,
-			FilterString: nil,
+			FilterString: "",
 		}
 	}
 

@@ -8,7 +8,7 @@ package goh
 import (
 	"errors"
 	"fmt"
-	"github.com/jinntrance/goh/thrift"
+	"git.apache.org/thrift.git/lib/go/thrift"
 )
 
 /*
