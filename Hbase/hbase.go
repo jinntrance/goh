@@ -7257,7 +7257,7 @@ func (p *GetTableNamesResult) readField0(iprot thrift.TProtocol) error {
 	p.Success = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem207 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem207 = Text(v)
@@ -7306,11 +7306,11 @@ func (p *GetTableNamesResult) writeField0(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
 			return fmt.Errorf("%T write field begin error 0:success: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Success)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Success)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Success {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -7387,7 +7387,7 @@ func (p *GetColumnDescriptorsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetColumnDescriptorsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -7412,16 +7412,14 @@ func (p *GetColumnDescriptorsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetColumnDescriptorsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -7486,7 +7484,7 @@ func (p *GetColumnDescriptorsResult) readField0(iprot thrift.TProtocol) error {
 	p.Success = make(map[Text]*ColumnDescriptor, size)
 	for i := 0; i < size; i++ {
 		var _key208 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key208 = Text(v)
@@ -7539,11 +7537,11 @@ func (p *GetColumnDescriptorsResult) writeField0(oprot thrift.TProtocol) (err er
 		if err := oprot.WriteFieldBegin("success", thrift.MAP, 0); err != nil {
 			return fmt.Errorf("%T write field begin error 0:success: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.STRUCT, len(p.Success)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRUCT, len(p.Success)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Success {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 			if err := v.Write(oprot); err != nil {
@@ -7623,7 +7621,7 @@ func (p *GetTableRegionsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetTableRegionsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -7648,16 +7646,14 @@ func (p *GetTableRegionsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetTableRegionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -7855,7 +7851,7 @@ func (p *CreateTableArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *CreateTableArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -7902,16 +7898,14 @@ func (p *CreateTableArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *CreateTableArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -8150,7 +8144,7 @@ func (p *MTCreateTableArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MTCreateTableArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -8166,7 +8160,7 @@ func (p *MTCreateTableArgs) readField2(iprot thrift.TProtocol) error {
 	p.SplitKeys = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem212 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem212 = Text(v)
@@ -8221,16 +8215,14 @@ func (p *MTCreateTableArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MTCreateTableArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -8240,11 +8232,11 @@ func (p *MTCreateTableArgs) writeField2(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("splitKeys", thrift.LIST, 2); err != nil {
 			return fmt.Errorf("%T write field begin error 2:splitKeys: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.SplitKeys)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.SplitKeys)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.SplitKeys {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -8487,7 +8479,7 @@ func (p *MTAddColumnArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MTAddColumnArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -8534,16 +8526,14 @@ func (p *MTAddColumnArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MTAddColumnArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -8745,7 +8735,7 @@ func (p *MTModifyColumnArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MTModifyColumnArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -8792,16 +8782,14 @@ func (p *MTModifyColumnArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MTModifyColumnArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -9003,7 +8991,7 @@ func (p *MTDeleteColumnArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MTDeleteColumnArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -9052,16 +9040,14 @@ func (p *MTDeleteColumnArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MTDeleteColumnArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -9258,7 +9244,7 @@ func (p *DeleteTableArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteTableArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -9283,16 +9269,14 @@ func (p *DeleteTableArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *DeleteTableArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -9449,7 +9433,7 @@ func (p *GetArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -9458,7 +9442,7 @@ func (p *GetArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -9467,7 +9451,7 @@ func (p *GetArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *GetArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.Column = Text(v)
@@ -9483,13 +9467,13 @@ func (p *GetArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key217 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key217 = Text(v)
 		}
 		var _val218 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val218 = Text(v)
@@ -9528,46 +9512,40 @@ func (p *GetArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.Column != nil {
-		if err := oprot.WriteFieldBegin("column", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Column); err != nil {
-			return fmt.Errorf("%T.column (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:column: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("column", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Column)); err != nil {
+		return fmt.Errorf("%T.column (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:column: %s", p, err)
 	}
 	return err
 }
@@ -9577,14 +9555,14 @@ func (p *GetArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -9806,7 +9784,7 @@ func (p *GetVerArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetVerArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -9815,7 +9793,7 @@ func (p *GetVerArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetVerArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -9824,7 +9802,7 @@ func (p *GetVerArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *GetVerArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.Column = Text(v)
@@ -9849,13 +9827,13 @@ func (p *GetVerArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key220 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key220 = Text(v)
 		}
 		var _val221 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val221 = Text(v)
@@ -9897,46 +9875,40 @@ func (p *GetVerArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetVerArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetVerArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetVerArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.Column != nil {
-		if err := oprot.WriteFieldBegin("column", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Column); err != nil {
-			return fmt.Errorf("%T.column (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:column: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("column", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Column)); err != nil {
+		return fmt.Errorf("%T.column (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:column: %s", p, err)
 	}
 	return err
 }
@@ -9959,14 +9931,14 @@ func (p *GetVerArgs) writeField5(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -10193,7 +10165,7 @@ func (p *GetVerTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetVerTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -10202,7 +10174,7 @@ func (p *GetVerTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetVerTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -10211,7 +10183,7 @@ func (p *GetVerTsArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *GetVerTsArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.Column = Text(v)
@@ -10245,13 +10217,13 @@ func (p *GetVerTsArgs) readField6(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key223 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key223 = Text(v)
 		}
 		var _val224 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val224 = Text(v)
@@ -10296,46 +10268,40 @@ func (p *GetVerTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetVerTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetVerTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetVerTsArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.Column != nil {
-		if err := oprot.WriteFieldBegin("column", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Column); err != nil {
-			return fmt.Errorf("%T.column (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:column: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("column", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Column)); err != nil {
+		return fmt.Errorf("%T.column (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:column: %s", p, err)
 	}
 	return err
 }
@@ -10371,14 +10337,14 @@ func (p *GetVerTsArgs) writeField6(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 6); err != nil {
 			return fmt.Errorf("%T write field begin error 6:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -10590,7 +10556,7 @@ func (p *GetRowArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -10599,7 +10565,7 @@ func (p *GetRowArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -10615,13 +10581,13 @@ func (p *GetRowArgs) readField3(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key226 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key226 = Text(v)
 		}
 		var _val227 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val227 = Text(v)
@@ -10657,31 +10623,27 @@ func (p *GetRowArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -10691,14 +10653,14 @@ func (p *GetRowArgs) writeField3(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -10915,7 +10877,7 @@ func (p *GetRowWithColumnsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -10924,7 +10886,7 @@ func (p *GetRowWithColumnsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -10940,7 +10902,7 @@ func (p *GetRowWithColumnsArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem229 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem229 = Text(v)
@@ -10961,13 +10923,13 @@ func (p *GetRowWithColumnsArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key230 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key230 = Text(v)
 		}
 		var _val231 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val231 = Text(v)
@@ -11006,31 +10968,27 @@ func (p *GetRowWithColumnsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowWithColumnsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -11040,11 +10998,11 @@ func (p *GetRowWithColumnsArgs) writeField3(oprot thrift.TProtocol) (err error) 
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -11063,14 +11021,14 @@ func (p *GetRowWithColumnsArgs) writeField4(oprot thrift.TProtocol) (err error) 
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -11287,7 +11245,7 @@ func (p *GetRowTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -11296,7 +11254,7 @@ func (p *GetRowTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -11321,13 +11279,13 @@ func (p *GetRowTsArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key233 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key233 = Text(v)
 		}
 		var _val234 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val234 = Text(v)
@@ -11366,31 +11324,27 @@ func (p *GetRowTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -11413,14 +11367,14 @@ func (p *GetRowTsArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -11642,7 +11596,7 @@ func (p *GetRowWithColumnsTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -11651,7 +11605,7 @@ func (p *GetRowWithColumnsTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -11667,7 +11621,7 @@ func (p *GetRowWithColumnsTsArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem236 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem236 = Text(v)
@@ -11697,13 +11651,13 @@ func (p *GetRowWithColumnsTsArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key237 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key237 = Text(v)
 		}
 		var _val238 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val238 = Text(v)
@@ -11745,31 +11699,27 @@ func (p *GetRowWithColumnsTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowWithColumnsTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -11779,11 +11729,11 @@ func (p *GetRowWithColumnsTsArgs) writeField3(oprot thrift.TProtocol) (err error
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -11815,14 +11765,14 @@ func (p *GetRowWithColumnsTsArgs) writeField5(oprot thrift.TProtocol) (err error
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -12034,7 +11984,7 @@ func (p *GetRowsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -12050,7 +12000,7 @@ func (p *GetRowsArgs) readField2(iprot thrift.TProtocol) error {
 	p.Rows = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem240 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem240 = Text(v)
@@ -12071,13 +12021,13 @@ func (p *GetRowsArgs) readField3(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key241 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key241 = Text(v)
 		}
 		var _val242 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val242 = Text(v)
@@ -12113,16 +12063,14 @@ func (p *GetRowsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -12132,11 +12080,11 @@ func (p *GetRowsArgs) writeField2(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("rows", thrift.LIST, 2); err != nil {
 			return fmt.Errorf("%T write field begin error 2:rows: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Rows)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Rows)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Rows {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -12155,14 +12103,14 @@ func (p *GetRowsArgs) writeField3(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -12379,7 +12327,7 @@ func (p *GetRowsWithColumnsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsWithColumnsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -12395,7 +12343,7 @@ func (p *GetRowsWithColumnsArgs) readField2(iprot thrift.TProtocol) error {
 	p.Rows = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem244 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem244 = Text(v)
@@ -12416,7 +12364,7 @@ func (p *GetRowsWithColumnsArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem245 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem245 = Text(v)
@@ -12437,13 +12385,13 @@ func (p *GetRowsWithColumnsArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key246 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key246 = Text(v)
 		}
 		var _val247 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val247 = Text(v)
@@ -12482,16 +12430,14 @@ func (p *GetRowsWithColumnsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsWithColumnsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -12501,11 +12447,11 @@ func (p *GetRowsWithColumnsArgs) writeField2(oprot thrift.TProtocol) (err error)
 		if err := oprot.WriteFieldBegin("rows", thrift.LIST, 2); err != nil {
 			return fmt.Errorf("%T write field begin error 2:rows: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Rows)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Rows)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Rows {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -12524,11 +12470,11 @@ func (p *GetRowsWithColumnsArgs) writeField3(oprot thrift.TProtocol) (err error)
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -12547,14 +12493,14 @@ func (p *GetRowsWithColumnsArgs) writeField4(oprot thrift.TProtocol) (err error)
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -12771,7 +12717,7 @@ func (p *GetRowsTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -12787,7 +12733,7 @@ func (p *GetRowsTsArgs) readField2(iprot thrift.TProtocol) error {
 	p.Rows = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem249 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem249 = Text(v)
@@ -12817,13 +12763,13 @@ func (p *GetRowsTsArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key250 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key250 = Text(v)
 		}
 		var _val251 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val251 = Text(v)
@@ -12862,16 +12808,14 @@ func (p *GetRowsTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -12881,11 +12825,11 @@ func (p *GetRowsTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("rows", thrift.LIST, 2); err != nil {
 			return fmt.Errorf("%T write field begin error 2:rows: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Rows)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Rows)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Rows {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -12917,14 +12861,14 @@ func (p *GetRowsTsArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -13146,7 +13090,7 @@ func (p *GetRowsWithColumnsTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsWithColumnsTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -13162,7 +13106,7 @@ func (p *GetRowsWithColumnsTsArgs) readField2(iprot thrift.TProtocol) error {
 	p.Rows = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem253 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem253 = Text(v)
@@ -13183,7 +13127,7 @@ func (p *GetRowsWithColumnsTsArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem254 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem254 = Text(v)
@@ -13213,13 +13157,13 @@ func (p *GetRowsWithColumnsTsArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key255 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key255 = Text(v)
 		}
 		var _val256 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val256 = Text(v)
@@ -13261,16 +13205,14 @@ func (p *GetRowsWithColumnsTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowsWithColumnsTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -13280,11 +13222,11 @@ func (p *GetRowsWithColumnsTsArgs) writeField2(oprot thrift.TProtocol) (err erro
 		if err := oprot.WriteFieldBegin("rows", thrift.LIST, 2); err != nil {
 			return fmt.Errorf("%T write field begin error 2:rows: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Rows)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Rows)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Rows {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -13303,11 +13245,11 @@ func (p *GetRowsWithColumnsTsArgs) writeField3(oprot thrift.TProtocol) (err erro
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -13339,14 +13281,14 @@ func (p *GetRowsWithColumnsTsArgs) writeField5(oprot thrift.TProtocol) (err erro
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -13563,7 +13505,7 @@ func (p *MutateRowArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -13572,7 +13514,7 @@ func (p *MutateRowArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -13607,13 +13549,13 @@ func (p *MutateRowArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key259 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key259 = Text(v)
 		}
 		var _val260 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val260 = Text(v)
@@ -13652,31 +13594,27 @@ func (p *MutateRowArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *MutateRowArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -13709,14 +13647,14 @@ func (p *MutateRowArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -13919,7 +13857,7 @@ func (p *MutateRowTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -13928,7 +13866,7 @@ func (p *MutateRowTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -13972,13 +13910,13 @@ func (p *MutateRowTsArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key262 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key262 = Text(v)
 		}
 		var _val263 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val263 = Text(v)
@@ -14020,31 +13958,27 @@ func (p *MutateRowTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *MutateRowTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -14090,14 +14024,14 @@ func (p *MutateRowTsArgs) writeField5(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -14290,7 +14224,7 @@ func (p *MutateRowsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -14325,13 +14259,13 @@ func (p *MutateRowsArgs) readField3(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key265 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key265 = Text(v)
 		}
 		var _val266 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val266 = Text(v)
@@ -14367,16 +14301,14 @@ func (p *MutateRowsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -14409,14 +14341,14 @@ func (p *MutateRowsArgs) writeField3(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -14614,7 +14546,7 @@ func (p *MutateRowsTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowsTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -14658,13 +14590,13 @@ func (p *MutateRowsTsArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key268 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key268 = Text(v)
 		}
 		var _val269 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val269 = Text(v)
@@ -14703,16 +14635,14 @@ func (p *MutateRowsTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *MutateRowsTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -14758,14 +14688,14 @@ func (p *MutateRowsTsArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -14963,7 +14893,7 @@ func (p *AtomicIncrementArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *AtomicIncrementArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -14972,7 +14902,7 @@ func (p *AtomicIncrementArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *AtomicIncrementArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -14981,7 +14911,7 @@ func (p *AtomicIncrementArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *AtomicIncrementArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.Column = Text(v)
@@ -15024,46 +14954,40 @@ func (p *AtomicIncrementArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *AtomicIncrementArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *AtomicIncrementArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
 
 func (p *AtomicIncrementArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.Column != nil {
-		if err := oprot.WriteFieldBegin("column", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Column); err != nil {
-			return fmt.Errorf("%T.column (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:column: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("column", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Column)); err != nil {
+		return fmt.Errorf("%T.column (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:column: %s", p, err)
 	}
 	return err
 }
@@ -15296,7 +15220,7 @@ func (p *DeleteAllArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -15305,7 +15229,7 @@ func (p *DeleteAllArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -15314,7 +15238,7 @@ func (p *DeleteAllArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.Column = Text(v)
@@ -15330,13 +15254,13 @@ func (p *DeleteAllArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key270 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key270 = Text(v)
 		}
 		var _val271 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val271 = Text(v)
@@ -15375,46 +15299,40 @@ func (p *DeleteAllArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *DeleteAllArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
 
 func (p *DeleteAllArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.Column != nil {
-		if err := oprot.WriteFieldBegin("column", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Column); err != nil {
-			return fmt.Errorf("%T.column (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:column: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("column", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Column)); err != nil {
+		return fmt.Errorf("%T.column (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:column: %s", p, err)
 	}
 	return err
 }
@@ -15424,14 +15342,14 @@ func (p *DeleteAllArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -15602,7 +15520,7 @@ func (p *DeleteAllTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -15611,7 +15529,7 @@ func (p *DeleteAllTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -15620,7 +15538,7 @@ func (p *DeleteAllTsArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllTsArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.Column = Text(v)
@@ -15645,13 +15563,13 @@ func (p *DeleteAllTsArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key272 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key272 = Text(v)
 		}
 		var _val273 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val273 = Text(v)
@@ -15693,46 +15611,40 @@ func (p *DeleteAllTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *DeleteAllTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
 
 func (p *DeleteAllTsArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.Column != nil {
-		if err := oprot.WriteFieldBegin("column", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Column); err != nil {
-			return fmt.Errorf("%T.column (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:column: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("column", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:column: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Column)); err != nil {
+		return fmt.Errorf("%T.column (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:column: %s", p, err)
 	}
 	return err
 }
@@ -15755,14 +15667,14 @@ func (p *DeleteAllTsArgs) writeField5(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -15923,7 +15835,7 @@ func (p *DeleteAllRowArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllRowArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -15932,7 +15844,7 @@ func (p *DeleteAllRowArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllRowArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -15948,13 +15860,13 @@ func (p *DeleteAllRowArgs) readField3(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key274 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key274 = Text(v)
 		}
 		var _val275 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val275 = Text(v)
@@ -15990,31 +15902,27 @@ func (p *DeleteAllRowArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllRowArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *DeleteAllRowArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -16024,14 +15932,14 @@ func (p *DeleteAllRowArgs) writeField3(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -16566,7 +16474,7 @@ func (p *DeleteAllRowTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllRowTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -16575,7 +16483,7 @@ func (p *DeleteAllRowTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllRowTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -16600,13 +16508,13 @@ func (p *DeleteAllRowTsArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key277 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key277 = Text(v)
 		}
 		var _val278 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val278 = Text(v)
@@ -16645,31 +16553,27 @@ func (p *DeleteAllRowTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *DeleteAllRowTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *DeleteAllRowTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -16692,14 +16596,14 @@ func (p *DeleteAllRowTsArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -16860,7 +16764,7 @@ func (p *ScannerOpenWithScanArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithScanArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -16884,13 +16788,13 @@ func (p *ScannerOpenWithScanArgs) readField3(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key279 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key279 = Text(v)
 		}
 		var _val280 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val280 = Text(v)
@@ -16926,16 +16830,14 @@ func (p *ScannerOpenWithScanArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithScanArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
@@ -16960,14 +16862,14 @@ func (p *ScannerOpenWithScanArgs) writeField3(oprot thrift.TProtocol) (err error
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -17164,7 +17066,7 @@ func (p *ScannerOpenArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -17173,7 +17075,7 @@ func (p *ScannerOpenArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.StartRow = Text(v)
@@ -17189,7 +17091,7 @@ func (p *ScannerOpenArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem281 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem281 = Text(v)
@@ -17210,13 +17112,13 @@ func (p *ScannerOpenArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key282 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key282 = Text(v)
 		}
 		var _val283 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val283 = Text(v)
@@ -17255,31 +17157,27 @@ func (p *ScannerOpenArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *ScannerOpenArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.StartRow != nil {
-		if err := oprot.WriteFieldBegin("startRow", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.StartRow); err != nil {
-			return fmt.Errorf("%T.startRow (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("startRow", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StartRow)); err != nil {
+		return fmt.Errorf("%T.startRow (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
 	}
 	return err
 }
@@ -17289,11 +17187,11 @@ func (p *ScannerOpenArgs) writeField3(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -17312,14 +17210,14 @@ func (p *ScannerOpenArgs) writeField4(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -17521,7 +17419,7 @@ func (p *ScannerOpenWithStopArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -17530,7 +17428,7 @@ func (p *ScannerOpenWithStopArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.StartRow = Text(v)
@@ -17539,7 +17437,7 @@ func (p *ScannerOpenWithStopArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.StopRow = Text(v)
@@ -17555,7 +17453,7 @@ func (p *ScannerOpenWithStopArgs) readField4(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem284 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem284 = Text(v)
@@ -17576,13 +17474,13 @@ func (p *ScannerOpenWithStopArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key285 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key285 = Text(v)
 		}
 		var _val286 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val286 = Text(v)
@@ -17624,46 +17522,40 @@ func (p *ScannerOpenWithStopArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *ScannerOpenWithStopArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.StartRow != nil {
-		if err := oprot.WriteFieldBegin("startRow", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.StartRow); err != nil {
-			return fmt.Errorf("%T.startRow (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("startRow", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StartRow)); err != nil {
+		return fmt.Errorf("%T.startRow (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
 	}
 	return err
 }
 
 func (p *ScannerOpenWithStopArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.StopRow != nil {
-		if err := oprot.WriteFieldBegin("stopRow", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:stopRow: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.StopRow); err != nil {
-			return fmt.Errorf("%T.stopRow (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:stopRow: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("stopRow", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:stopRow: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StopRow)); err != nil {
+		return fmt.Errorf("%T.stopRow (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:stopRow: %s", p, err)
 	}
 	return err
 }
@@ -17673,11 +17565,11 @@ func (p *ScannerOpenWithStopArgs) writeField4(oprot thrift.TProtocol) (err error
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -17696,14 +17588,14 @@ func (p *ScannerOpenWithStopArgs) writeField5(oprot thrift.TProtocol) (err error
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -17900,7 +17792,7 @@ func (p *ScannerOpenWithPrefixArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithPrefixArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -17909,7 +17801,7 @@ func (p *ScannerOpenWithPrefixArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithPrefixArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.StartAndPrefix = Text(v)
@@ -17925,7 +17817,7 @@ func (p *ScannerOpenWithPrefixArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem287 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem287 = Text(v)
@@ -17946,13 +17838,13 @@ func (p *ScannerOpenWithPrefixArgs) readField4(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key288 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key288 = Text(v)
 		}
 		var _val289 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val289 = Text(v)
@@ -17991,31 +17883,27 @@ func (p *ScannerOpenWithPrefixArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithPrefixArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *ScannerOpenWithPrefixArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.StartAndPrefix != nil {
-		if err := oprot.WriteFieldBegin("startAndPrefix", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:startAndPrefix: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.StartAndPrefix); err != nil {
-			return fmt.Errorf("%T.startAndPrefix (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:startAndPrefix: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("startAndPrefix", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:startAndPrefix: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StartAndPrefix)); err != nil {
+		return fmt.Errorf("%T.startAndPrefix (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:startAndPrefix: %s", p, err)
 	}
 	return err
 }
@@ -18025,11 +17913,11 @@ func (p *ScannerOpenWithPrefixArgs) writeField3(oprot thrift.TProtocol) (err err
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -18048,14 +17936,14 @@ func (p *ScannerOpenWithPrefixArgs) writeField4(oprot thrift.TProtocol) (err err
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -18257,7 +18145,7 @@ func (p *ScannerOpenTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -18266,7 +18154,7 @@ func (p *ScannerOpenTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.StartRow = Text(v)
@@ -18282,7 +18170,7 @@ func (p *ScannerOpenTsArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem290 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem290 = Text(v)
@@ -18312,13 +18200,13 @@ func (p *ScannerOpenTsArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key291 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key291 = Text(v)
 		}
 		var _val292 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val292 = Text(v)
@@ -18360,31 +18248,27 @@ func (p *ScannerOpenTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *ScannerOpenTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.StartRow != nil {
-		if err := oprot.WriteFieldBegin("startRow", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.StartRow); err != nil {
-			return fmt.Errorf("%T.startRow (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("startRow", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StartRow)); err != nil {
+		return fmt.Errorf("%T.startRow (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
 	}
 	return err
 }
@@ -18394,11 +18278,11 @@ func (p *ScannerOpenTsArgs) writeField3(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -18430,14 +18314,14 @@ func (p *ScannerOpenTsArgs) writeField5(oprot thrift.TProtocol) (err error) {
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -18644,7 +18528,7 @@ func (p *ScannerOpenWithStopTsArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopTsArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -18653,7 +18537,7 @@ func (p *ScannerOpenWithStopTsArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopTsArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.StartRow = Text(v)
@@ -18662,7 +18546,7 @@ func (p *ScannerOpenWithStopTsArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopTsArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.StopRow = Text(v)
@@ -18678,7 +18562,7 @@ func (p *ScannerOpenWithStopTsArgs) readField4(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem293 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem293 = Text(v)
@@ -18708,13 +18592,13 @@ func (p *ScannerOpenWithStopTsArgs) readField6(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key294 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key294 = Text(v)
 		}
 		var _val295 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val295 = Text(v)
@@ -18759,46 +18643,40 @@ func (p *ScannerOpenWithStopTsArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *ScannerOpenWithStopTsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *ScannerOpenWithStopTsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.StartRow != nil {
-		if err := oprot.WriteFieldBegin("startRow", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.StartRow); err != nil {
-			return fmt.Errorf("%T.startRow (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("startRow", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:startRow: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StartRow)); err != nil {
+		return fmt.Errorf("%T.startRow (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:startRow: %s", p, err)
 	}
 	return err
 }
 
 func (p *ScannerOpenWithStopTsArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.StopRow != nil {
-		if err := oprot.WriteFieldBegin("stopRow", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:stopRow: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.StopRow); err != nil {
-			return fmt.Errorf("%T.stopRow (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:stopRow: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("stopRow", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:stopRow: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.StopRow)); err != nil {
+		return fmt.Errorf("%T.stopRow (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:stopRow: %s", p, err)
 	}
 	return err
 }
@@ -18808,11 +18686,11 @@ func (p *ScannerOpenWithStopTsArgs) writeField4(oprot thrift.TProtocol) (err err
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 4); err != nil {
 			return fmt.Errorf("%T write field begin error 4:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -18844,14 +18722,14 @@ func (p *ScannerOpenWithStopTsArgs) writeField6(oprot thrift.TProtocol) (err err
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 6); err != nil {
 			return fmt.Errorf("%T write field begin error 6:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -19793,7 +19671,7 @@ func (p *GetRowOrBeforeArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowOrBeforeArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -19802,7 +19680,7 @@ func (p *GetRowOrBeforeArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowOrBeforeArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -19811,7 +19689,7 @@ func (p *GetRowOrBeforeArgs) readField2(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowOrBeforeArgs) readField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
 		p.Family = Text(v)
@@ -19842,46 +19720,40 @@ func (p *GetRowOrBeforeArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowOrBeforeArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowOrBeforeArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowOrBeforeArgs) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.Family != nil {
-		if err := oprot.WriteFieldBegin("family", thrift.BINARY, 3); err != nil {
-			return fmt.Errorf("%T write field begin error 3:family: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Family); err != nil {
-			return fmt.Errorf("%T.family (3) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 3:family: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("family", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:family: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Family)); err != nil {
+		return fmt.Errorf("%T.family (3) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 3:family: %s", p, err)
 	}
 	return err
 }
@@ -20074,7 +19946,7 @@ func (p *GetRegionInfoArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRegionInfoArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.Row = Text(v)
@@ -20099,16 +19971,14 @@ func (p *GetRegionInfoArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRegionInfoArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:row: %s", p, err)
 	}
 	return err
 }
@@ -20302,7 +20172,7 @@ func (p *GetRowWithColumnsMaxVerArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsMaxVerArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -20311,7 +20181,7 @@ func (p *GetRowWithColumnsMaxVerArgs) readField1(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsMaxVerArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -20327,7 +20197,7 @@ func (p *GetRowWithColumnsMaxVerArgs) readField3(iprot thrift.TProtocol) error {
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem299 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem299 = Text(v)
@@ -20357,13 +20227,13 @@ func (p *GetRowWithColumnsMaxVerArgs) readField5(iprot thrift.TProtocol) error {
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key300 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key300 = Text(v)
 		}
 		var _val301 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val301 = Text(v)
@@ -20405,31 +20275,27 @@ func (p *GetRowWithColumnsMaxVerArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsMaxVerArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowWithColumnsMaxVerArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -20439,11 +20305,11 @@ func (p *GetRowWithColumnsMaxVerArgs) writeField3(oprot thrift.TProtocol) (err e
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -20475,14 +20341,14 @@ func (p *GetRowWithColumnsMaxVerArgs) writeField5(oprot thrift.TProtocol) (err e
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 5); err != nil {
 			return fmt.Errorf("%T write field begin error 5:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -20709,7 +20575,7 @@ func (p *GetRowWithColumnsTsMaxVerArgs) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsTsMaxVerArgs) readField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 1: %s")
 	} else {
 		p.TableName = Text(v)
@@ -20718,7 +20584,7 @@ func (p *GetRowWithColumnsTsMaxVerArgs) readField1(iprot thrift.TProtocol) error
 }
 
 func (p *GetRowWithColumnsTsMaxVerArgs) readField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBinary(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
 		p.Row = Text(v)
@@ -20734,7 +20600,7 @@ func (p *GetRowWithColumnsTsMaxVerArgs) readField3(iprot thrift.TProtocol) error
 	p.Columns = make([]Text, 0, size)
 	for i := 0; i < size; i++ {
 		var _elem303 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_elem303 = Text(v)
@@ -20773,13 +20639,13 @@ func (p *GetRowWithColumnsTsMaxVerArgs) readField6(iprot thrift.TProtocol) error
 	p.Attributes = make(map[Text]Text, size)
 	for i := 0; i < size; i++ {
 		var _key304 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_key304 = Text(v)
 		}
 		var _val305 Text
-		if v, err := iprot.ReadBinary(); err != nil {
+		if v, err := iprot.ReadString(); err != nil {
 			return fmt.Errorf("error reading field 0: %s")
 		} else {
 			_val305 = Text(v)
@@ -20824,31 +20690,27 @@ func (p *GetRowWithColumnsTsMaxVerArgs) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *GetRowWithColumnsTsMaxVerArgs) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.TableName != nil {
-		if err := oprot.WriteFieldBegin("tableName", thrift.BINARY, 1); err != nil {
-			return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.TableName); err != nil {
-			return fmt.Errorf("%T.tableName (1) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("tableName", thrift.STRING, 1); err != nil {
+		return fmt.Errorf("%T write field begin error 1:tableName: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.TableName)); err != nil {
+		return fmt.Errorf("%T.tableName (1) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 1:tableName: %s", p, err)
 	}
 	return err
 }
 
 func (p *GetRowWithColumnsTsMaxVerArgs) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.Row != nil {
-		if err := oprot.WriteFieldBegin("row", thrift.BINARY, 2); err != nil {
-			return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
-		}
-		if err := oprot.WriteBinary(p.Row); err != nil {
-			return fmt.Errorf("%T.row (2) field write error: %s", p)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 2:row: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("row", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:row: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.Row)); err != nil {
+		return fmt.Errorf("%T.row (2) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 2:row: %s", p, err)
 	}
 	return err
 }
@@ -20858,11 +20720,11 @@ func (p *GetRowWithColumnsTsMaxVerArgs) writeField3(oprot thrift.TProtocol) (err
 		if err := oprot.WriteFieldBegin("columns", thrift.LIST, 3); err != nil {
 			return fmt.Errorf("%T write field begin error 3:columns: %s", p, err)
 		}
-		if err := oprot.WriteListBegin(thrift.BINARY, len(p.Columns)); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Columns)); err != nil {
 			return fmt.Errorf("error writing list begin: %s")
 		}
 		for _, v := range p.Columns {
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}
@@ -20907,14 +20769,14 @@ func (p *GetRowWithColumnsTsMaxVerArgs) writeField6(oprot thrift.TProtocol) (err
 		if err := oprot.WriteFieldBegin("attributes", thrift.MAP, 6); err != nil {
 			return fmt.Errorf("%T write field begin error 6:attributes: %s", p, err)
 		}
-		if err := oprot.WriteMapBegin(thrift.BINARY, thrift.BINARY, len(p.Attributes)); err != nil {
+		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Attributes)); err != nil {
 			return fmt.Errorf("error writing map begin: %s")
 		}
 		for k, v := range p.Attributes {
-			if err := oprot.WriteBinary(k); err != nil {
+			if err := oprot.WriteString(string(k)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
-			if err := oprot.WriteBinary(v); err != nil {
+			if err := oprot.WriteString(string(v)); err != nil {
 				return fmt.Errorf("%T. (0) field write error: %s", p)
 			}
 		}

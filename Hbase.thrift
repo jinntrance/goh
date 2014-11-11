@@ -46,7 +46,7 @@ namespace php Hbase
 // maintaining.  If strings with an invalid encoding are sent, an
 // IOError will be thrown.
 
-typedef binary Text
+typedef string Text
 typedef binary Bytes
 typedef i32    ScannerID
 
