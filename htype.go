@@ -5,10 +5,7 @@
 
 package goh
 
-import (
-	"fmt"
-	"github.com/jinntrance/goh/Hbase"
-)
+import "github.com/jinntrance/goh/Hbase"
 
 //type Text []byte
 
@@ -196,62 +193,3 @@ func toHbaseTScan(scan *TScan) *Hbase.TScan {
 
 }
 
-// /**
-//  * TCell - Used to transport a cell value (byte[]) and the timestamp it was
-//  * stored with together as a result for get and getRow methods. This promotes
-//  * the timestamp of a cell to a first-class value, making it easy to take
-//  * note of temporal data. Cell is used all the way from HStore up to HTable.
-//  * 
-//  * Attributes:
-//  *  - Value
-//  *  - Timestamp
-//  */
-// type TCell struct {
-// 	Value     []byte "value"     // 1
-// 	Timestamp int64  "timestamp" // 2
-// }
-
-// /**
-//  * An IOError exception signals that an error occurred communicating
-//  * to the Hbase master or an Hbase region server.  Also used to return
-//  * more general Hbase error conditions.
-//  * 
-//  * Attributes:
-//  *  - Message
-//  */
-// type IOError struct {
-// 	Message string "message" // 1
-// }
-
-// /**
-//  * An IllegalArgument exception indicates an illegal or invalid
-//  * argument was passed into a procedure.
-//  * 
-//  * Attributes:
-//  *  - Message
-//  */
-// type IllegalArgument struct {
-// 	Message string "message" // 1
-// }
-
-// /**
-//  * An AlreadyExists exceptions signals that a table with the specified
-//  * name already exists
-//  * 
-//  * Attributes:
-//  *  - Message
-//  */
-// type AlreadyExists struct {
-// 	Message string "message" // 1
-// }
-
-// func (t *AlreadyExists) String() string {
-// 	if t == nil {
-// 		return "<nil>"
-// 	}
-// 	return t.Message
-// }
-
-func name() {
-	fmt.Println("...")
-}

@@ -210,6 +210,37 @@ func (client *HClient) GetTableNames() (tables []string, err error) {
 	return
 }
 
+/**
+ * List all the column families assoicated with a table.
+ *
+ * @return list of column family descriptors
+ *
+ * Parameters:
+ *  - TableName: table name
+ */
+func (client *HClient) GetColumnDescriptors(tableName string) (columns map[Hbase.Text]*Hbase.ColumnDescriptor, err error) {
+	columns, io, e1 := client.hbase.GetColumnDescriptors(Hbase.Text(tableName))
+	if err = checkHbaseError(io, e1); err != nil {
+		return
+	}
+	return
+}
+
+/**
+ * List the regions associated with a table.
+ *
+ * @return list of region descriptors
+ *
+ * Parameters:
+ *  - TableName: table name
+ */
+func (client *HClient) GetTableRegions(tableName string) (regions []*Hbase.TRegionInfo, err error) {
+	regions, io, e1 := client.hbase.GetTableRegions(Hbase.Text(tableName))
+	if err = checkHbaseError(io, e1); err != nil {
+		return
+	}
+	return
+}
 
 /**
  * Create a table with the specified column families.  The name
@@ -897,5 +928,22 @@ func (client *HClient) GetRowOrBefore(tableName string, row string, family strin
 	}
 
 	data = ret
+	return
+}
+
+/**
+ * Get the regininfo for the specified row. It scans
+ * the metatable to find region's start and end keys.
+ *
+ * @return value for specified row/column
+ *
+ * Parameters:
+ *  - Row: row key
+ */
+func (client *HClient) GetRegionInfo(row string) (region *Hbase.TRegionInfo, err error) {
+	region, io, e1 := client.hbase.GetRegionInfo(Hbase.Text(row))
+	if err = checkHbaseError(io, e1); err != nil {
+		return
+	}
 	return
 }
