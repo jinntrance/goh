@@ -1,11 +1,12 @@
 package goh
 
 import (
-	"net"
+	"log"
 	"net/url"
+	"time"
 
+	"git.apache.org/thrift.git/lib/go/thrift"
 	"github.com/jinntrance/goh/Hbase"
-	"github.com/jinntrance/goh/thrift"
 	"github.com/jinntrance/pool"
 )
 
@@ -29,7 +30,7 @@ type HbaseClientPool struct {
 	Framed      bool
 	hPool       *pool.Pool
 	MaxPoolSize int
-	Timeout     int64
+	Timeout     time.Duration
 }
 
 func (clientPool *HbaseClientPool) GetClient() (c *HClient, err error) {
@@ -76,23 +77,18 @@ func NewHttpClient(rawurl string, protocol int) (client *HClient, err error) {
 NewTcpClient return a base tcp client instance
 
 */
-func NewTcpClient(rawaddr string, protocol int, framed bool, timeout int64) (client *HClient, err error) {
-	tcpAddr, err := net.ResolveTCPAddr("tcp", rawaddr)
-	if err != nil {
-		return
-	}
+func NewTcpClient(rawaddr string, protocol int, framed bool, timeout time.Duration) (client *HClient, err error) {
 
-	var trans thrift.TTransport
-	//trans, err = thrift.NewTNonblockingSocketAddr(tcpAddr)
-	trans, err = thrift.NewTNonblockingSocketAddrTimeout(tcpAddr, timeout) // 5e7 50ms timeout
+	socket, err := thrift.NewTSocketTimeout(rawaddr, timeout)
 	if err != nil {
+		log.Println("error resolving address:", err)
 		return
 	}
 	if framed {
-		trans = thrift.NewTFramedTransport(trans)
+		trans := thrift.NewTFramedTransport(socket)
+		return newClient(rawaddr, protocol, trans)
 	}
-
-	return newClient(tcpAddr.String(), protocol, trans)
+	return newClient(rawaddr, protocol, socket)
 }
 
 /*
@@ -222,12 +218,11 @@ func (client *HClient) GetTableNames() (tables []string, err error) {
  * Parameters:
  *  - TableName: table name
  */
-func (client *HClient) GetColumnDescriptors(tableName string) (columns map[string]*ColumnDescriptor, err error) {
-	ret, io, e1 := client.hbase.GetColumnDescriptors(Hbase.Text(tableName))
+func (client *HClient) GetColumnDescriptors(tableName string) (columns map[Hbase.Text]*Hbase.ColumnDescriptor, err error) {
+	columns, io, e1 := client.hbase.GetColumnDescriptors(Hbase.Text(tableName))
 	if err = checkHbaseError(io, e1); err != nil {
 		return
 	}
-	columns = toColMap(ret)
 	return
 }
 
@@ -239,13 +234,11 @@ func (client *HClient) GetColumnDescriptors(tableName string) (columns map[strin
  * Parameters:
  *  - TableName: table name
  */
-func (client *HClient) GetTableRegions(tableName string) (regions []*TRegionInfo, err error) {
-	ret, io, e1 := client.hbase.GetTableRegions(Hbase.Text(tableName))
+func (client *HClient) GetTableRegions(tableName string) (regions []*Hbase.TRegionInfo, err error) {
+	regions, io, e1 := client.hbase.GetTableRegions(Hbase.Text(tableName))
 	if err = checkHbaseError(io, e1); err != nil {
 		return
 	}
-
-	regions = toRegionList(ret)
 	return
 }
 
@@ -263,9 +256,9 @@ func (client *HClient) GetTableRegions(tableName string) (regions []*TRegionInfo
  *  - TableName: name of table to create
  *  - ColumnFamilies: list of column family descriptors
  */
-func (client *HClient) CreateTable(tableName string, columnFamilies []*ColumnDescriptor) (exists bool, err error) {
-	columns := toHbaseColList(columnFamilies)
-	io, ia, ex, e1 := client.hbase.CreateTable(Hbase.Text(tableName), columns)
+func (client *HClient) CreateTable(tableName string, columnFamilies []*Hbase.ColumnDescriptor) (exists bool,
+	err error) {
+	io, ia, ex, e1 := client.hbase.CreateTable(Hbase.Text(tableName), columnFamilies)
 	if err = checkHbaseArgError(io, ia, e1); err != nil {
 		return
 	}
@@ -947,12 +940,10 @@ func (client *HClient) GetRowOrBefore(tableName string, row string, family strin
  * Parameters:
  *  - Row: row key
  */
-func (client *HClient) GetRegionInfo(row string) (region *TRegionInfo, err error) {
-	ret, io, e1 := client.hbase.GetRegionInfo(Hbase.Text(row))
+func (client *HClient) GetRegionInfo(row string) (region *Hbase.TRegionInfo, err error) {
+	region, io, e1 := client.hbase.GetRegionInfo(Hbase.Text(row))
 	if err = checkHbaseError(io, e1); err != nil {
 		return
 	}
-
-	region = toRegion(ret)
 	return
 }
